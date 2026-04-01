@@ -54,7 +54,7 @@ class Program
             else
             {
                 Console.WriteLine("Invalid input. Press any key");
-                Console.ReadKey();
+                Console.ReadKey(true);
             }
         }
     }
