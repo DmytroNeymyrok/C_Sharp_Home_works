@@ -17,45 +17,96 @@
 //heikkisSwissAccount.Deposit(200);
 //Console.WriteLine("The balance of Heikki's other account is now: " + heikkisSwissAccount.Balance);
 
-class BankApplication
+//23.04.2026
+using Bank_account;
+
+public class Account
 {
-    static void Main(string[] args)
+    public Account (string name)
     {
-        Console.OutputEncoding = System.Text.Encoding.UTF8;
-        bool isRunning = true;
-        while (isRunning)
-        {
-            Console.WriteLine("\n--- Яку дію хочете виконати? ---");
-            Console.WriteLine("1. Перевірити баланс");
-            Console.WriteLine("2. Поповнити баланс");
-            Console.WriteLine("3. Зняти гроші з рахунку");
-            Console.WriteLine("4. Вихід");
-            Console.Write("Виберіть дію: ");
-
-            string? choice = Console.ReadLine();
-
-            switch (choice)
-            {
-                case "1":
-                    GetBalance();
-                    Console.WriteLine($"Поточний баланс: {GetBalanse.balance}");
-                    break;
-                case "2":
-                    ShowTasks();
-                    break;
-                case "3":
-                    CompleteTask();
-                    break;
-                case "4":
-                    Console.WriteLine("Програма завершена");
-                    isRunning = false;
-                    break;
-                default:           // Обробка помилок (якщо введено щось інше)
-                    Console.WriteLine("Помилка: Невірний вибір. Спробуйте ще раз (1-4)");
-                    break;
-            }
-        }
+        Name = name;    
     }
+    public string Name { get; }
+
+    public List<Transaction> Transactions { get; } = new List<Transaction> ();  
+
+    public void Deposit(decimal amount)
+    {
+        if (amount <= 0)
+        {
+            throw new ArgumentException("Amount must be positive");
+        }
+            
+
+        Transaction newTransaction = new Transaction(amount, TransactionKind.Deposit);
+        Transactions.Add(newTransaction);
+    }
+
+    public void Withdraval(decimal amount)
+    {
+        if (amount <= 0)
+        {
+            throw new ArgumentException("Amount must be positive");
+        }            
+
+        if (GetBalance() - amount < 0)
+        {
+            throw new InvalidOperationException("Недостатньо коштів на рахунку");
+        }            
+
+        Transaction newTransaction = new Transaction (amount, TransactionKind.Withdraval);
+        Transactions.Add(newTransaction);
+    }
+
+    public decimal GetBalance()
+    {
+        return Transactions.Sum(t => t.Kind == TransactionKind.Deposit? t.Amount : -t.Amount);
+    }
+}
+
+
+
+
+
+//class BankApplication
+//{
+//    static void Main(string[] args)
+//    {
+//        Console.OutputEncoding = System.Text.Encoding.UTF8;
+//        bool isRunning = true;
+//        while (isRunning)
+//        {
+//            Console.WriteLine("\n--- Яку дію хочете виконати? ---");
+//            Console.WriteLine("1. Перевірити баланс");
+//            Console.WriteLine("2. Поповнити баланс");
+//            Console.WriteLine("3. Зняти гроші з рахунку");
+//            Console.WriteLine("4. Вихід");
+//            Console.Write("Виберіть дію: ");
+
+//            string? choice = Console.ReadLine();
+
+//            switch (choice)
+//            {
+//                case "1":
+//                    GetBalance();
+//                    Console.WriteLine($"Поточний баланс: {GetBalanse.balance}");
+//                    break;
+//                case "2":
+//                    ShowTasks();
+//                    break;
+//                case "3":
+//                    CompleteTask();
+//                    break;
+//                case "4":
+//                    Console.WriteLine("Програма завершена");
+//                    isRunning = false;
+//                    break;
+//                default:           // Обробка помилок (якщо введено щось інше)
+//                    Console.WriteLine("Помилка: Невірний вибір. Спробуйте ще раз (1-4)");
+//                    break;
+//            }
+//        }
+//    }
 
 
     //class Account
@@ -80,44 +131,44 @@ class BankApplication
 
     //}
 
-    class Account
-    {
-        private string name;
-        private decimal balance;
-        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
-        public decimal GetBalance()
-        {
-            decimal balance = 0;
-            foreach (var transaction in Transactions)
-            {
-                if (transaction.Type == TransactionType.Deposit)
-                {
-                    balance += transaction.Amount;
-                }
-                else if (transaction.Type == TransactionType.Withdraval)
-                {
-                    balance -= transaction.Amount;
-                }
-            }
-            return balance;
-        }
+//    class Account
+//    {
+//        private string name;
+//        private decimal balance;
+//        public List<Transaction> Transactions { get; set; } = new List<Transaction>();
+//        public decimal GetBalance()
+//        {
+//            decimal balance = 0;
+//            foreach (var transaction in Transactions)
+//            {
+//                if (transaction.Type == TransactionType.Deposit)
+//                {
+//                    balance += transaction.Amount;
+//                }
+//                else if (transaction.Type == TransactionType.Withdraval)
+//                {
+//                    balance -= transaction.Amount;
+//                }
+//            }
+//            return balance;
+//        }
 
-    }
+//    }
 
-    class Transaction
-    {
-        public decimal Amount { get; set; }
-        public TransactionType Type { get; set; }
-    }
+//    class Transaction
+//    {
+//        public decimal Amount { get; set; }
+//        public TransactionType Type { get; set; }
+//    }
 
-    enum TransactionType
-    {
-        Deposit,
-        Withdraval
-    }
+//    enum TransactionType
+//    {
+//        Deposit,
+//        Withdraval
+//    }
 
 
-}
+//}
 
 //Версія ШІ
 
